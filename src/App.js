@@ -61,9 +61,7 @@ function App() {
       console.log(+wagerLines + 1);
       setWagerLines(+wagerLines + 1);
     }
-    // if (wagerLines + 1 === maxLines) {
-    //   spinHandler();
-    // }
+
     if (wagerLines === maxLines) {
       spinHandler();
     }
@@ -77,6 +75,12 @@ function App() {
   };
   const spinHandler = () => {
     let winAmount = 0;
+    const checkWager = (lines) => {
+      if (wagerLines >= lines) {
+        winAmount = +winAmount + 1;
+        console.log("line win:", lines);
+      }
+    };
     console.log("spin!");
     setBottomDisplayWin(false);
     setTopDisplayWin(false);
@@ -85,11 +89,8 @@ function App() {
       const toDisplay = resolveGame(slotArray, 100);
       setTopDisplayWin(evaluateWin(toDisplay));
       setTopDisplayRow(toDisplay);
-      if (wagerLines === 2 || 3) {
-        if (evaluateWin(toDisplay)) {
-          winAmount = +winAmount + 1;
-          console.log("top line:", winAmount);
-        }
+      if (evaluateWin(toDisplay)) {
+        checkWager(2);
       }
     }, 1500);
     const timer2 = setTimeout(() => {
@@ -97,20 +98,15 @@ function App() {
       setDisplayArrayWin(evaluateWin(toDisplay));
       setDisplayArray(toDisplay);
       if (evaluateWin(toDisplay)) {
-        winAmount = +winAmount + 1;
-        console.log("wagerLines:", wagerLines);
-        console.log("middle line:", winAmount);
+        checkWager(1);
       }
     }, 2000);
     const timer3 = setTimeout(() => {
       const toDisplay = resolveGame(slotArray, 100);
       setBottomDisplayWin(evaluateWin(toDisplay));
       setBottomDisplayRow(toDisplay);
-      if (wagerLines === 3) {
-        if (evaluateWin(toDisplay)) {
-          winAmount = +winAmount + 1;
-          console.log("bottom line:", winAmount);
-        }
+      if (evaluateWin(toDisplay)) {
+        checkWager(3);
       }
       updateWinnings(winAmount);
     }, 3000);
