@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import cherry from "./images/Cherry.png";
 import bakedFish from "./images/Baked_Fish.png";
 import goldBar from "./images/Gold_Bar.png";
@@ -48,14 +48,13 @@ function App() {
     getRandomItem(slotArray),
   ]);
   const maxLines = 3;
+  const [winAmount, setWinAmount] = useState(0);
   const [topDisplayWin, setTopDisplayWin] = useState(false);
   const [displayArrayWin, setDisplayArrayWin] = useState(false);
   const [bottomDisplayWin, setBottomDisplayWin] = useState(false);
   const [wagerLines, setWagerLines] = useState(0);
-  const updateWinnings = (winAmount) => {
-    setWagerLines(0);
-    console.log("winnings:", winAmount);
-  };
+  const wagerLinesRef = useRef(wagerLines);
+  wagerLinesRef.current = wagerLines;
   const wagerHandler = () => {
     if (wagerLines < maxLines) {
       console.log(+wagerLines + 1);
@@ -74,41 +73,45 @@ function App() {
     // }, 3000);
   };
   const spinHandler = () => {
-    let winAmount = 0;
+    setWinAmount(0);
     const checkWager = (lines) => {
-      if (wagerLines >= lines) {
-        winAmount = +winAmount + 1;
-        console.log("line win:", lines);
+      if (wagerLinesRef.current >= lines) {
+        setWinAmount(+winAmount + 1);
+        return true;
       }
+      return false;
     };
     console.log("spin!");
     setBottomDisplayWin(false);
     setTopDisplayWin(false);
     setDisplayArrayWin(false);
     const timer1 = setTimeout(() => {
-      const toDisplay = resolveGame(slotArray, 100);
-      setTopDisplayWin(evaluateWin(toDisplay));
+      const toDisplay = resolveGame(slotArray, 10);
       setTopDisplayRow(toDisplay);
-      if (evaluateWin(toDisplay)) {
-        checkWager(2);
+      if (checkWager(2)) {
+        setTopDisplayWin(toDisplay);
       }
     }, 1500);
     const timer2 = setTimeout(() => {
-      const toDisplay = resolveGame(slotArray, 100);
-      setDisplayArrayWin(evaluateWin(toDisplay));
+      const toDisplay = resolveGame(slotArray, 10);
+
       setDisplayArray(toDisplay);
       if (evaluateWin(toDisplay)) {
-        checkWager(1);
+        if (checkWager(1)) {
+          setDisplayArrayWin(toDisplay);
+        }
       }
     }, 2000);
     const timer3 = setTimeout(() => {
-      const toDisplay = resolveGame(slotArray, 100);
-      setBottomDisplayWin(evaluateWin(toDisplay));
+      const toDisplay = resolveGame(slotArray, 10);
       setBottomDisplayRow(toDisplay);
       if (evaluateWin(toDisplay)) {
-        checkWager(3);
+        if (checkWager(3)) {
+          setBottomDisplayWin(toDisplay);
+        }
       }
-      updateWinnings(winAmount);
+      console.log("wins:", wagerLinesRef.current);
+      setWagerLines(0);
     }, 3000);
 
     setTopDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
