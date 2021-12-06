@@ -16,6 +16,9 @@ import Blank from "./images/Blank.png";
 import { resolveGame, getRandomItem, evaluateWin } from "./utils/game";
 import SlotRow from "./components/SlotRow";
 import SpinAssigner from "./components/SpinAssigner";
+import LinesBet_IMG from "./images/Lines_Bet.png";
+import WINS_IMG from "./images/Wins.png";
+
 const slotArray = [
   cherry,
   bakedFish,
@@ -55,6 +58,9 @@ function App() {
   const [displayArrayWin, setDisplayArrayWin] = useState(false);
   const [bottomDisplayWin, setBottomDisplayWin] = useState(false);
   const [wagerLines, setWagerLines] = useState(0);
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const buttonsDisabledRef = useRef(buttonsDisabled);
+  buttonsDisabledRef.current = buttonsDisabled;
   const wagerLinesRef = useRef(wagerLines);
   wagerLinesRef.current = wagerLines;
   const wagerHandler = () => {
@@ -75,10 +81,11 @@ function App() {
     // }, 3000);
   };
   const spinHandler = () => {
+    setButtonsDisabled(true);
     setWinAmount(0);
     const checkWager = (lines) => {
       if (wagerLinesRef.current >= lines) {
-        setWinAmount(+winAmount + 1);
+        setWinAmount(+winAmountRef.current + 1);
         return true;
       }
       return false;
@@ -116,6 +123,7 @@ function App() {
       }
       console.log("wins:", winAmountRef.current);
       setWagerLines(0);
+      setButtonsDisabled(false);
     }, 3000);
 
     setTopDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
@@ -126,17 +134,50 @@ function App() {
 
   return (
     <div className="app">
-      <SlotRow array={topDisplayRow} winParam={topDisplayWin} />
-      <SlotRow array={displayArray} winParam={displayArrayWin} />
-      <SlotRow array={bottomDisplayRow} winParam={bottomDisplayWin} />
+      <SlotRow
+        array={topDisplayRow}
+        winParam={topDisplayWin}
+        playLine={wagerLines > 1 ? true : false}
+      />
+
+      <SlotRow
+        array={displayArray}
+        winParam={displayArrayWin}
+        playLine={wagerLines > 0 ? true : false}
+      />
+      <SlotRow
+        array={bottomDisplayRow}
+        winParam={bottomDisplayWin}
+        playLine={wagerLines > 2 ? true : false}
+      />
       <div>
-        <button className="wager-one-button" onClick={wagerHandler}>
+        <img src={LinesBet_IMG} alt="logo" />{" "}
+        <input className="lines-bet" value={wagerLines}></input>
+        <img src={WINS_IMG} alt="logo" />{" "}
+        <input className="lines-bet" value={winAmount}></input>
+      </div>
+      <div>
+        <button
+          className="wager-one-button"
+          onClick={wagerHandler}
+          disabled={buttonsDisabledRef.current}
+        >
           BET ONE
         </button>
-        <button className="wager-max-button" onClick={maxWagerHandler}>
+        <button
+          className="wager-max-button"
+          onClick={maxWagerHandler}
+          disabled={buttonsDisabledRef.current}
+        >
           BET MAX!
         </button>
-        <button className="spin-button" onClick={spinHandler}>
+        <button
+          className="spin-button"
+          onClick={spinHandler}
+          disabled={
+            buttonsDisabledRef.current || wagerLines <= 0 ? true : false
+          }
+        >
           Spin the reels!
         </button>
       </div>

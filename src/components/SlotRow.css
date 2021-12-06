@@ -3,3 +3,11 @@
   border-right: 1px solid #222;
   border-left: 1px solid #222;
 }
+.arrow-icon {
+  padding: 0.5rem;
+  border-right: 1px solid #222;
+}
+.win-icon {
+  padding: 0.5rem;
+  border-left: 1px solid #222;
+}
