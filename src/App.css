@@ -36,11 +36,40 @@
 .App-link {
   color: #61dafb;
 }
-
+.wager-amount {
+  width: 40px;
+  margin-top: 3rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
 .spin-button {
   margin-top: 3rem;
   padding: 1rem;
   background-color: yellow;
+  border-radius: 0.5rem;
+  color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.wager-one-button {
+  margin-top: 3rem;
+  padding: 1rem;
+  background-color: #888888;
+  border-radius: 0.5rem;
+  color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.wager-max-button {
+  margin-top: 3rem;
+  padding: 1rem;
+  background-color: #ff0000;
   border-radius: 0.5rem;
   color: #222;
   box-shadow: 10px;

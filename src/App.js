@@ -12,6 +12,7 @@ import Pink_Cake from "./images/Pink_Cake.png";
 import Prehistoric_Tibia from "./images/Prehistoric_Tibia.png";
 import Rainbow_Trout from "./images/Rainbow_Trout.png";
 import Strawberry from "./images/Strawberry.png";
+import Blank from "./images/Blank.png";
 import { resolveGame, getRandomItem, evaluateWin } from "./utils/game";
 import SlotRow from "./components/SlotRow";
 import SpinAssigner from "./components/SpinAssigner";
@@ -28,6 +29,7 @@ const slotArray = [
   Prehistoric_Tibia,
   Rainbow_Trout,
   Strawberry,
+  Blank,
 ];
 function App() {
   const [topDisplayRow, setTopDisplayRow] = useState([
@@ -45,30 +47,72 @@ function App() {
     getRandomItem(slotArray),
     getRandomItem(slotArray),
   ]);
-
+  const maxLines = 3;
   const [topDisplayWin, setTopDisplayWin] = useState(false);
   const [displayArrayWin, setDisplayArrayWin] = useState(false);
   const [bottomDisplayWin, setBottomDisplayWin] = useState(false);
-
+  const [wagerLines, setWagerLines] = useState(0);
+  const updateWinnings = (winAmount) => {
+    setWagerLines(0);
+    console.log("winnings:", winAmount);
+  };
+  const wagerHandler = () => {
+    if (wagerLines < maxLines) {
+      console.log(+wagerLines + 1);
+      setWagerLines(+wagerLines + 1);
+    }
+    // if (wagerLines + 1 === maxLines) {
+    //   spinHandler();
+    // }
+    if (wagerLines === maxLines) {
+      spinHandler();
+    }
+  };
+  const maxWagerHandler = () => {
+    console.log(maxLines);
+    setWagerLines(maxLines);
+    // const timerMax = setTimeout(() => {
+    spinHandler();
+    // }, 3000);
+  };
   const spinHandler = () => {
+    let winAmount = 0;
     console.log("spin!");
     setBottomDisplayWin(false);
     setTopDisplayWin(false);
     setDisplayArrayWin(false);
     const timer1 = setTimeout(() => {
-      const toDisplay = resolveGame(slotArray, 10);
+      const toDisplay = resolveGame(slotArray, 100);
       setTopDisplayWin(evaluateWin(toDisplay));
       setTopDisplayRow(toDisplay);
+      if (wagerLines === 2 || 3) {
+        if (evaluateWin(toDisplay)) {
+          winAmount = +winAmount + 1;
+          console.log("top line:", winAmount);
+        }
+      }
     }, 1500);
     const timer2 = setTimeout(() => {
-      const toDisplay = resolveGame(slotArray, 10);
-      setDisplayArray(toDisplay);
+      const toDisplay = resolveGame(slotArray, 100);
       setDisplayArrayWin(evaluateWin(toDisplay));
+      setDisplayArray(toDisplay);
+      if (evaluateWin(toDisplay)) {
+        winAmount = +winAmount + 1;
+        console.log("wagerLines:", wagerLines);
+        console.log("middle line:", winAmount);
+      }
     }, 2000);
     const timer3 = setTimeout(() => {
-      const toDisplay = resolveGame(slotArray, 10);
+      const toDisplay = resolveGame(slotArray, 100);
       setBottomDisplayWin(evaluateWin(toDisplay));
       setBottomDisplayRow(toDisplay);
+      if (wagerLines === 3) {
+        if (evaluateWin(toDisplay)) {
+          winAmount = +winAmount + 1;
+          console.log("bottom line:", winAmount);
+        }
+      }
+      updateWinnings(winAmount);
     }, 3000);
 
     setTopDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
@@ -82,9 +126,17 @@ function App() {
       <SlotRow array={topDisplayRow} winParam={topDisplayWin} />
       <SlotRow array={displayArray} winParam={displayArrayWin} />
       <SlotRow array={bottomDisplayRow} winParam={bottomDisplayWin} />
-      <button className="spin-button" onClick={spinHandler}>
-        Spin the reels!
-      </button>
+      <div>
+        <button className="wager-one-button" onClick={wagerHandler}>
+          BET ONE
+        </button>
+        <button className="wager-max-button" onClick={maxWagerHandler}>
+          BET MAX!
+        </button>
+        <button className="spin-button" onClick={spinHandler}>
+          Spin the reels!
+        </button>
+      </div>
     </div>
   );
 }
