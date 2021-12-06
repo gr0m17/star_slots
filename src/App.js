@@ -49,6 +49,8 @@ function App() {
   ]);
   const maxLines = 3;
   const [winAmount, setWinAmount] = useState(0);
+  const winAmountRef = useRef(winAmount);
+  winAmountRef.current = winAmount;
   const [topDisplayWin, setTopDisplayWin] = useState(false);
   const [displayArrayWin, setDisplayArrayWin] = useState(false);
   const [bottomDisplayWin, setBottomDisplayWin] = useState(false);
@@ -88,8 +90,10 @@ function App() {
     const timer1 = setTimeout(() => {
       const toDisplay = resolveGame(slotArray, 10);
       setTopDisplayRow(toDisplay);
-      if (checkWager(2)) {
-        setTopDisplayWin(toDisplay);
+      if (evaluateWin(toDisplay)) {
+        if (checkWager(2)) {
+          setTopDisplayWin(toDisplay);
+        }
       }
     }, 1500);
     const timer2 = setTimeout(() => {
@@ -110,7 +114,7 @@ function App() {
           setBottomDisplayWin(toDisplay);
         }
       }
-      console.log("wins:", wagerLinesRef.current);
+      console.log("wins:", winAmountRef.current);
       setWagerLines(0);
     }, 3000);
 
