@@ -18,12 +18,50 @@ import SlotRow from "./components/SlotRow";
 import { SpinAssigner, PreloadSpinners } from "./components/SpinAssigner";
 import LinesBet_IMG from "./images/Lines_Bet.png";
 import WINS_IMG from "./images/Wins.png";
+import DisplayPayout from "./components/DisplayPayouts";
+
+const payoutTableLookup = {
+  cherry: 2,
+  bakedFish: 3,
+  goldBar: 5,
+  Strawberry: 5,
+  Glacierfish: 10,
+  Grape: 5,
+  Lionfish: 10,
+  Mutant_Carp: 25,
+  Pineapple: 5,
+  Pink_Cake: 50,
+  Prehistoric_Tibia: 1,
+  Rainbow_Trout: 100,
+  // Blank: 1,
+};
+const payoutTableNames = [
+  "cherry",
+  "bakedFish",
+  "goldBar",
+  "Strawberry",
+  "Glacierfish",
+  "Grape",
+  "Lionfish",
+  "Mutant_Carp",
+  "Pineapple",
+  "Pink_Cake",
+  "Prehistoric_Tibia",
+  "Rainbow_Trout",
+  // "Blank",
+];
+
+const payoutTable = [
+  2, 3, 5, 5, 5, 10, 10, 25, 25, 50, 75, 100,
+  // 1
+];
 
 const slotArray = [
   cherry,
   bakedFish,
   goldBar,
   Glacierfish,
+  Strawberry,
   Grape,
   Lionfish,
   Mutant_Carp,
@@ -31,9 +69,9 @@ const slotArray = [
   Pink_Cake,
   Prehistoric_Tibia,
   Rainbow_Trout,
-  Strawberry,
-  Blank,
+  // Blank,
 ];
+
 function App() {
   const [topDisplayRow, setTopDisplayRow] = useState([
     getRandomItem(slotArray),
@@ -64,6 +102,7 @@ function App() {
   const wagerLinesRef = useRef(wagerLines);
   wagerLinesRef.current = wagerLines;
   PreloadSpinners();
+
   const wagerHandler = () => {
     if (wagerLines < maxLines) {
       console.log(+wagerLines + 1);
@@ -84,9 +123,12 @@ function App() {
   const spinHandler = () => {
     setButtonsDisabled(true);
     setWinAmount(0);
-    const checkWager = (lines) => {
+    const checkWager = (lines, toDisplay) => {
       if (wagerLinesRef.current >= lines) {
-        setWinAmount(+winAmountRef.current + 1);
+        const prizeMultiplier = slotArray.findIndex(
+          (element) => element === toDisplay[0]
+        );
+        setWinAmount(+winAmountRef.current + payoutTable[prizeMultiplier]);
         return true;
       }
       return false;
@@ -99,7 +141,7 @@ function App() {
       const toDisplay = resolveGame(slotArray, 10);
       setTopDisplayRow(toDisplay);
       if (evaluateWin(toDisplay)) {
-        if (checkWager(2)) {
+        if (checkWager(2, toDisplay)) {
           setTopDisplayWin(toDisplay);
         }
       }
@@ -109,7 +151,7 @@ function App() {
 
       setDisplayArray(toDisplay);
       if (evaluateWin(toDisplay)) {
-        if (checkWager(1)) {
+        if (checkWager(1, toDisplay)) {
           setDisplayArrayWin(toDisplay);
         }
       }
@@ -118,7 +160,7 @@ function App() {
       const toDisplay = resolveGame(slotArray, 10);
       setBottomDisplayRow(toDisplay);
       if (evaluateWin(toDisplay)) {
-        if (checkWager(3)) {
+        if (checkWager(3, toDisplay)) {
           setBottomDisplayWin(toDisplay);
         }
       }
@@ -134,54 +176,57 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <SlotRow
-        array={topDisplayRow}
-        winParam={topDisplayWin}
-        playLine={wagerLines > 1 ? true : false}
-      />
-
-      <SlotRow
-        array={displayArray}
-        winParam={displayArrayWin}
-        playLine={wagerLines > 0 ? true : false}
-      />
-      <SlotRow
-        array={bottomDisplayRow}
-        winParam={bottomDisplayWin}
-        playLine={wagerLines > 2 ? true : false}
-      />
-      <div>
-        <img src={LinesBet_IMG} alt="logo" />{" "}
-        <input className="lines-bet" value={wagerLines}></input>
-        <img src={WINS_IMG} alt="logo" />{" "}
-        <input className="lines-bet" value={winAmount}></input>
+    <div className="flexBox">
+      <div className="app">
+        <h1>Star Slots!</h1>
+        <SlotRow
+          array={topDisplayRow}
+          winParam={topDisplayWin}
+          playLine={wagerLines > 1 ? true : false}
+        />
+        <SlotRow
+          array={displayArray}
+          winParam={displayArrayWin}
+          playLine={wagerLines > 0 ? true : false}
+        />
+        <SlotRow
+          array={bottomDisplayRow}
+          winParam={bottomDisplayWin}
+          playLine={wagerLines > 2 ? true : false}
+        />
+        <div className="Information">
+          <img src={LinesBet_IMG} alt="logo" />{" "}
+          <input className="lines-bet" value={wagerLines}></input>
+          <img src={WINS_IMG} alt="logo" />{" "}
+          <input className="lines-payout" value={winAmount}></input>
+        </div>
+        <div className="Buttons">
+          <button
+            className="wager-one-button"
+            onClick={wagerHandler}
+            disabled={buttonsDisabledRef.current}
+          >
+            BET ONE
+          </button>
+          <button
+            className="wager-max-button"
+            onClick={maxWagerHandler}
+            disabled={buttonsDisabledRef.current}
+          >
+            BET MAX!
+          </button>
+          <button
+            className="spin-button"
+            onClick={spinHandler}
+            disabled={
+              buttonsDisabledRef.current || wagerLines <= 0 ? true : false
+            }
+          >
+            Spin the reels!
+          </button>
+        </div>
       </div>
-      <div>
-        <button
-          className="wager-one-button"
-          onClick={wagerHandler}
-          disabled={buttonsDisabledRef.current}
-        >
-          BET ONE
-        </button>
-        <button
-          className="wager-max-button"
-          onClick={maxWagerHandler}
-          disabled={buttonsDisabledRef.current}
-        >
-          BET MAX!
-        </button>
-        <button
-          className="spin-button"
-          onClick={spinHandler}
-          disabled={
-            buttonsDisabledRef.current || wagerLines <= 0 ? true : false
-          }
-        >
-          Spin the reels!
-        </button>
-      </div>
+      <DisplayPayout slotArray={slotArray} payoutTable={payoutTable} />
     </div>
   );
 }

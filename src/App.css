@@ -1,16 +1,32 @@
 .App {
   text-align: center;
 }
-
+.flexBox {
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: row; */
+}
 .app {
-  height: 100vh;
-  width: 100vw;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 500px;
   justify-content: center;
   align-items: center;
 }
-
+.flexCol {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* width: 500px; */
+  justify-content: center;
+  align-items: center;
+}
+.payoutTable {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -38,6 +54,17 @@
 }
 .lines-bet {
   width: 10px;
+  margin-top: 0.4rem;
+  margin-right: 0.2rem;
+  padding: 0.4rem;
+  border-radius: 0.3rem;
+  color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.lines-payout {
+  width: 40px;
   margin-top: 0.4rem;
   margin-right: 0.2rem;
   padding: 0.4rem;
