@@ -15,7 +15,7 @@ import Strawberry from "./images/Strawberry.png";
 import Blank from "./images/Blank.png";
 import { resolveGame, getRandomItem, evaluateWin } from "./utils/game";
 import SlotRow from "./components/SlotRow";
-import SpinAssigner from "./components/SpinAssigner";
+import { SpinAssigner, PreloadSpinners } from "./components/SpinAssigner";
 import LinesBet_IMG from "./images/Lines_Bet.png";
 import WINS_IMG from "./images/Wins.png";
 
@@ -63,6 +63,7 @@ function App() {
   buttonsDisabledRef.current = buttonsDisabled;
   const wagerLinesRef = useRef(wagerLines);
   wagerLinesRef.current = wagerLines;
+  PreloadSpinners();
   const wagerHandler = () => {
     if (wagerLines < maxLines) {
       console.log(+wagerLines + 1);

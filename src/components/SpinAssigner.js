@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import spin1 from "../images/spin_001.gif";
 import spin2 from "../images/spin_002.gif";
 import spin3 from "../images/spin_003.gif";
@@ -18,9 +19,19 @@ const spinArray = [
   spin8,
   spin9,
 ];
-function SpinAssigner() {
+export function SpinAssigner() {
   const randomIndex = Math.floor(Math.random() * spinArray.length);
   return spinArray[randomIndex];
+}
+
+export function PreloadSpinners() {
+  useEffect(() => {
+    //preloading image
+    spinArray.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  }, []);
 }
 
 export default SpinAssigner;
