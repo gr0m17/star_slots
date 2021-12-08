@@ -19,6 +19,7 @@ import { SpinAssigner, PreloadSpinners } from "./components/SpinAssigner";
 import LinesBet_IMG from "./images/Lines_Bet.png";
 import WINS_IMG from "./images/Wins.png";
 import DisplayPayout from "./components/DisplayPayouts";
+import { setBank, checkBank } from "./components/HighScore";
 
 const payoutTableLookup = {
   cherry: 2,
@@ -97,11 +98,18 @@ function App() {
   const [bottomDisplayWin, setBottomDisplayWin] = useState(false);
   const [wagerLines, setWagerLines] = useState(0);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [bankAmount, setBankAmount] = useState(null);
+  const bankAmountRef = useRef(bankAmount);
+  bankAmountRef.current = bankAmount;
   const buttonsDisabledRef = useRef(buttonsDisabled);
   buttonsDisabledRef.current = buttonsDisabled;
   const wagerLinesRef = useRef(wagerLines);
   wagerLinesRef.current = wagerLines;
   PreloadSpinners();
+
+  if (bankAmount === null) {
+    setBankAmount(checkBank());
+  }
 
   const wagerHandler = () => {
     if (wagerLines < maxLines) {
@@ -110,19 +118,26 @@ function App() {
     }
 
     if (wagerLines === maxLines) {
-      spinHandler();
+      spinHandler(wagerLines);
     }
   };
   const maxWagerHandler = () => {
     console.log(maxLines);
     setWagerLines(maxLines);
     // const timerMax = setTimeout(() => {
-    spinHandler();
+    spinHandler(maxLines);
     // }, 3000);
   };
-  const spinHandler = () => {
+  const spinHandler = (betLines) => {
+    setBank(bankAmount - betLines);
+    setBankAmount(bankAmount - betLines);
     setButtonsDisabled(true);
     setWinAmount(0);
+    const payWins = () => {
+      setBank(winAmountRef.current + bankAmountRef.current);
+      setBankAmount(winAmountRef.current + bankAmountRef.current);
+      return winAmountRef.current + bankAmount;
+    };
     const checkWager = (lines, toDisplay) => {
       if (wagerLinesRef.current >= lines) {
         const prizeMultiplier = slotArray.findIndex(
@@ -162,6 +177,7 @@ function App() {
       if (evaluateWin(toDisplay)) {
         if (checkWager(3, toDisplay)) {
           setBottomDisplayWin(toDisplay);
+          payWins();
         }
       }
       console.log("wins:", winAmountRef.current);
@@ -195,10 +211,16 @@ function App() {
           playLine={wagerLines > 2 ? true : false}
         />
         <div className="Information">
-          <img src={LinesBet_IMG} alt="logo" />{" "}
-          <input className="lines-bet" value={wagerLines}></input>
-          <img src={WINS_IMG} alt="logo" />{" "}
-          <input className="lines-payout" value={winAmount}></input>
+          <div>
+            <img src={LinesBet_IMG} alt="logo" />{" "}
+            <input className="lines-bet" value={wagerLines}></input>
+            <img src={WINS_IMG} alt="logo" />{" "}
+            <input className="lines-payout" value={winAmount}></input>
+          </div>
+          <div>
+            Bank:
+            <input className="lines-payout" value={bankAmount}></input>
+          </div>
         </div>
         <div className="Buttons">
           <button
