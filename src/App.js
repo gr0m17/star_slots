@@ -20,7 +20,7 @@ import LinesBet_IMG from "./images/Lines_Bet.png";
 import WINS_IMG from "./images/Wins.png";
 import DisplayPayout from "./components/DisplayPayouts";
 import { setBank, checkBank } from "./components/HighScore";
-
+import GetHighScores, { fetchHighScores } from "./components/GetHighScores";
 const payoutTableLookup = {
   cherry: 2,
   bakedFish: 3,
@@ -177,12 +177,12 @@ function App() {
       if (evaluateWin(toDisplay)) {
         if (checkWager(3, toDisplay)) {
           setBottomDisplayWin(toDisplay);
-          payWins();
         }
       }
       console.log("wins:", winAmountRef.current);
       setWagerLines(0);
       setButtonsDisabled(false);
+      payWins();
     }, 3000);
 
     setTopDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
@@ -247,6 +247,7 @@ function App() {
             Spin the reels!
           </button>
         </div>
+        {/* <GetHighScores scores={fetchHighScores()} /> */}
       </div>
       <DisplayPayout slotArray={slotArray} payoutTable={payoutTable} />
     </div>

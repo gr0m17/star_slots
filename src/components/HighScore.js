@@ -37,7 +37,7 @@ function getCookie(cname) {
 }
 export function checkBank() {
   let bank = getCookie("bank");
-  if (bank !== "") {
+  if (bank !== "" && bank !== null) {
     return bank;
   } else {
     bank = startingBank;
@@ -52,6 +52,10 @@ export function checkBank() {
 export function setBank(bank) {
   if (bank !== "" && bank != null) {
     setCookie("bank", bank, 365);
+    if (deviceID == null) {
+      deviceID = generateID();
+      setCookie("deviceID", deviceID, 365);
+    }
     updateHighscore(bank, deviceID);
   }
   return bank;
