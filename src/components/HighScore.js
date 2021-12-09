@@ -1,4 +1,5 @@
 import easyDB from "easydb-io";
+import { useState, useEffect, React } from "react";
 
 const db = easyDB({
   database: "2648cddb-5633-4d8c-ad71-2bb8e13a66be",
@@ -52,6 +53,7 @@ export function checkBank() {
 export function setBank(bank) {
   if (bank !== "" && bank != null) {
     setCookie("bank", bank, 365);
+    let deviceID = getCookie("deviceID");
     if (deviceID == null) {
       deviceID = generateID();
       setCookie("deviceID", deviceID, 365);
@@ -73,5 +75,21 @@ const updateHighscore = async (bankValue, deviceID) => {
   //   value = await db.get("myKey");
   //   value = await db.delete("myKey");
   values = await db.list();
-  console.log(values);
+  // console.log(values);
 };
+
+export function UpdateHighScores() {
+  async function fetchHighScores() {
+    const response = await db.list();
+    console.log(response);
+    const fetchedhighScores = await response;
+    const result = Object.values(fetchedhighScores);
+    const resultsArray = result.map((key) => {
+      return key.bank;
+    });
+    console.log(resultsArray);
+    return resultsArray.sort((a, b) => b - a);
+  }
+  const returnResult = fetchHighScores();
+  return returnResult;
+}

@@ -20,7 +20,8 @@ import LinesBet_IMG from "./images/Lines_Bet.png";
 import WINS_IMG from "./images/Wins.png";
 import DisplayPayout from "./components/DisplayPayouts";
 import { setBank, checkBank } from "./components/HighScore";
-import GetHighScores, { fetchHighScores } from "./components/GetHighScores";
+import GetHighScores from "./components/GetHighScores";
+import { UpdateHighScores } from "./components/HighScore";
 const payoutTableLookup = {
   cherry: 2,
   bakedFish: 3,
@@ -74,6 +75,7 @@ const slotArray = [
 ];
 
 function App() {
+  GetHighScores();
   const [topDisplayRow, setTopDisplayRow] = useState([
     getRandomItem(slotArray),
     getRandomItem(slotArray),
@@ -100,6 +102,7 @@ function App() {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [bankAmount, setBankAmount] = useState(null);
   const bankAmountRef = useRef(bankAmount);
+  const [highScores, setHighScores] = useState(0);
   bankAmountRef.current = bankAmount;
   const buttonsDisabledRef = useRef(buttonsDisabled);
   buttonsDisabledRef.current = buttonsDisabled;
@@ -147,6 +150,8 @@ function App() {
     const payWins = () => {
       setBank(winAmountRef.current + bankAmountRef.current);
       setBankAmount(winAmountRef.current + bankAmountRef.current);
+      let value = UpdateHighScores();
+      setHighScores(value);
       return winAmountRef.current + bankAmount;
     };
     const checkWager = (lines, toDisplay) => {
@@ -201,7 +206,6 @@ function App() {
     setBottomDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
     return () => clearTimeout(timer1, timer2, timer3);
   };
-
   return (
     <div className="flexBox">
       <div className="app">
@@ -258,7 +262,7 @@ function App() {
             Spin the reels!
           </button>
         </div>
-        {/* <GetHighScores scores={fetchHighScores()} /> */}
+        <GetHighScores highScores={highScores} />
       </div>
       <DisplayPayout slotArray={slotArray} payoutTable={payoutTable} />
     </div>
