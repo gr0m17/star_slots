@@ -128,7 +128,18 @@ function App() {
     spinHandler(maxLines);
     // }, 3000);
   };
-  const spinHandler = (betLines) => {
+  const spinHandler = (input) => {
+    console.log(
+      "bankAmount:",
+      bankAmount,
+      "wagerLinesRef.current:",
+      wagerLinesRef.current
+    );
+    let betLines = wagerLinesRef.current;
+    if (input > 0) {
+      betLines = input;
+    }
+    if (betLines < 1) betLines = wagerLines;
     setBank(bankAmount - betLines);
     setBankAmount(bankAmount - betLines);
     setButtonsDisabled(true);
