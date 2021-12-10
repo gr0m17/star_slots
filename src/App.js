@@ -18,6 +18,8 @@ import SlotRow from "./components/SlotRow";
 import { SpinAssigner, PreloadSpinners } from "./components/SpinAssigner";
 import LinesBet_IMG from "./images/Lines_Bet.png";
 import WINS_IMG from "./images/Wins.png";
+import Bank_IMG from "./images/Bank.png";
+import StarSlotsLogo_IMG from "./images/StarSlotsLogo.png";
 import DisplayPayout from "./components/DisplayPayouts";
 import { setBank, checkBank } from "./components/HighScore";
 import GetHighScores from "./components/GetHighScores";
@@ -206,7 +208,9 @@ function App() {
   return (
     <div className="flexBox">
       <div className="app">
-        <h1>Star Slots!</h1>
+        <div className="titleBox">
+          <img src={StarSlotsLogo_IMG} alt="logo" />
+        </div>
         <SlotRow
           array={topDisplayRow}
           winParam={topDisplayWin}
@@ -223,16 +227,12 @@ function App() {
           playLine={wagerLines > 2 ? true : false}
         />
         <div className="Information">
-          <div>
-            <img src={LinesBet_IMG} alt="logo" />{" "}
-            <input className="lines-bet" value={wagerLines}></input>
-            <img src={WINS_IMG} alt="logo" />{" "}
-            <input className="lines-payout" value={winAmount}></input>
-          </div>
-          <div>
-            Bank:
-            <input className="lines-payout" value={bankAmount}></input>
-          </div>
+          <img src={LinesBet_IMG} alt="logo" />{" "}
+          <input className="lines-bet" value={wagerLines}></input>
+          <img src={WINS_IMG} alt="logo" />{" "}
+          <input className="lines-payout" value={winAmount}></input>
+          <img src={Bank_IMG} alt="logo" />{" "}
+          <input className="lines-payout" value={bankAmount}></input>
         </div>
         <div className="Buttons">
           <button

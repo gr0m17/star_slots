@@ -85,34 +85,77 @@
   cursor: pointer;
 }
 .spin-button {
-  margin-top: 3rem;
   padding: 1rem;
   background-color: yellow;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   color: #222;
   box-shadow: 10px;
   font-weight: bold;
   cursor: pointer;
 }
 .wager-one-button {
-  margin-top: 3rem;
   padding: 1rem;
   background-color: #888888;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   color: #222;
   box-shadow: 10px;
   font-weight: bold;
   cursor: pointer;
 }
 .wager-max-button {
-  margin-top: 3rem;
   padding: 1rem;
   background-color: #ff0000;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   color: #222;
   box-shadow: 10px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.titleBox {
+  width: 310px;
+  margin-top: 20rem;
+  color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  border-style: dotted dotted none dotted;
+  border-radius: 1rem 1rem 0rem 0rem;
+  text-align: center;
+}
+.slotRow {
+  width: 310px;
+  height: 64px;
+  margin: 0rem;
+  border-radius: 0.2rem;
+  border-width: 0.15rem;
+  color: #222;
+  font-weight: bold;
+  border-style: solid solid none solid;
+  text-align: center;
+}
+.Information {
+  width: 350px;
+  height: 45px;
+  padding: 10px;
+  margin: 0rem;
+  border-radius: 0.5rem 0.5rem 0rem 0rem;
+  border-width: 0.15rem;
+  color: #222;
+  font-weight: bold;
+  border-style: solid solid none solid;
+  text-align: center;
+}
+.Buttons {
+  width: 350px;
+
+  padding: 10px;
+  margin: 0rem;
+  border-radius: 0rem 0rem 0.5rem 0.5rem;
+  border-width: 0.15rem;
+  color: #222;
+  font-weight: bold;
+  border-style: none solid solid solid;
+  text-align: center;
 }
 @keyframes App-logo-spin {
   from {

@@ -5,6 +5,7 @@ import Win_Indicator from "../images/win_indicator.png";
 const SlotRow = (props) => {
   return (
     <div
+      className="slotRow"
       style={
         props.winParam
           ? { backgroundColor: "#ED4245" }
