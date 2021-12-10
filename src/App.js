@@ -21,7 +21,6 @@ import WINS_IMG from "./images/Wins.png";
 import DisplayPayout from "./components/DisplayPayouts";
 import { setBank, checkBank } from "./components/HighScore";
 import GetHighScores from "./components/GetHighScores";
-import { UpdateHighScores } from "./components/HighScore";
 const payoutTableLookup = {
   cherry: 2,
   bakedFish: 3,
@@ -75,7 +74,7 @@ const slotArray = [
 ];
 
 function App() {
-  GetHighScores();
+  // GetHighScores();
   const [topDisplayRow, setTopDisplayRow] = useState([
     getRandomItem(slotArray),
     getRandomItem(slotArray),
@@ -150,8 +149,6 @@ function App() {
     const payWins = () => {
       setBank(winAmountRef.current + bankAmountRef.current);
       setBankAmount(winAmountRef.current + bankAmountRef.current);
-      let value = UpdateHighScores();
-      setHighScores(value);
       return winAmountRef.current + bankAmount;
     };
     const checkWager = (lines, toDisplay) => {
@@ -262,7 +259,7 @@ function App() {
             Spin the reels!
           </button>
         </div>
-        <GetHighScores highScores={highScores} />
+        <GetHighScores />
       </div>
       <DisplayPayout slotArray={slotArray} payoutTable={payoutTable} />
     </div>

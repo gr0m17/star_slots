@@ -21,7 +21,7 @@ function setCookie(cname, cvalue, exdays) {
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-function getCookie(cname) {
+export function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(";");
@@ -75,21 +75,6 @@ const updateHighscore = async (bankValue, deviceID) => {
   //   value = await db.get("myKey");
   //   value = await db.delete("myKey");
   values = await db.list();
+  return values;
   // console.log(values);
 };
-
-export function UpdateHighScores() {
-  async function fetchHighScores() {
-    const response = await db.list();
-    console.log(response);
-    const fetchedhighScores = await response;
-    const result = Object.values(fetchedhighScores);
-    const resultsArray = result.map((key) => {
-      return key.bank;
-    });
-    console.log(resultsArray);
-    return resultsArray.sort((a, b) => b - a);
-  }
-  const returnResult = fetchHighScores();
-  return returnResult;
-}
