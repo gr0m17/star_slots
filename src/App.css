@@ -114,11 +114,10 @@
 
 .titleBox {
   width: 310px;
-  margin-top: 20rem;
   color: #222;
   box-shadow: 10px;
   font-weight: bold;
-  border-style: dotted dotted none dotted;
+  border-style: dotted dotted solid dotted;
   border-radius: 1rem 1rem 0rem 0rem;
   text-align: center;
 }
@@ -130,7 +129,7 @@
   border-width: 0.15rem;
   color: #222;
   font-weight: bold;
-  border-style: solid solid none solid;
+  border-style: none solid none solid;
   text-align: center;
 }
 .Information {
