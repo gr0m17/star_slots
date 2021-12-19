@@ -1,15 +1,15 @@
 import { useEffect, useState, React } from "react";
 import ScoreBoard from "./ScoreBoard";
 import easyDB from "easydb-io";
-import { getCookie } from "./HighScore";
+import { getCookie } from "../utils/storage";
 const db = easyDB({
-  database: "2648cddb-5633-4d8c-ad71-2bb8e13a66be",
-  token: "60581ef8-ff21-4b2f-9fe1-cd14d9936f41",
+  database: "2472f89a-b73c-4dfc-847e-10a8f4a18ee6",
+  token: "cde7f55a-ff77-472b-ae68-d57367355963",
 });
 
 function GetHighScores() {
   let deviceID = getCookie("deviceID");
-  console.log(deviceID);
+  // console.log(deviceID);
   if (deviceID == null) {
   }
   const [highScores, setHighScores] = useState([]);
@@ -25,8 +25,8 @@ function GetHighScores() {
         const result = Object.values(fetchedhighScores);
         const resultKey = Object.keys(fetchedhighScores);
         const resultsArray = result.map((key, index) => {
-          console.log(key);
-          if (resultKey[index] == deviceID) {
+          // console.log(key);
+          if (resultKey[index] === deviceID) {
             myScoreIndex = index;
           }
           return key.bank;
@@ -36,7 +36,7 @@ function GetHighScores() {
         const timer1 = setTimeout(() => {
           setHighScores(sortedScores);
           setMyScore(myScoreTemp);
-          console.log(myScore);
+          // console.log(myScore);
         }, 2000);
       }
       fetchHighScores(scores);

@@ -2,20 +2,18 @@ import React from "react";
 
 const DisplayPayout = (props) => {
   return (
-    <div className="flexCol">
-      <div className="PayoutTable">
-        <h1>Payout Table:</h1>
-        {props.slotArray.map((element, index) => {
-          return (
-            <div>
-              <img src={props.slotArray[index]} />
-              <img src={props.slotArray[index]} />
-              <img src={props.slotArray[index]} />{" "}
-              {props.payoutTable[index] + "x"}
-            </div>
-          );
-        })}
-      </div>
+    <div className="payout-table">
+      {/* <h1>Payout Table:</h1> */}
+      {props.slotArray.map((element, index) => {
+        return (
+          <div>
+            <img src={props.slotArray[index]} />
+            <img src={props.slotArray[index]} />
+            <img src={props.slotArray[index]} />{" "}
+            {props.payoutTable[index] + "x"}
+          </div>
+        );
+      })}
     </div>
   );
 };

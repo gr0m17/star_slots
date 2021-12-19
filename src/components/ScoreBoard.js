@@ -1,16 +1,18 @@
 const ScoreBoard = (props) => {
-  console.log(props);
+  // console.log(props);
   return (
-    <div>
+    <div className="score-board">
       <h2>
-        Current Scoreboard: <br />
+        Leaderboard <br />
       </h2>
-      {props.scores.map((score, index) => (
-        <div key={index}>
-          {score}
-          {score === props.myScore ? " < this is you" : ""}
-        </div>
-      ))}
+      <ol>
+        {props.scores.map((score, index) => (
+          <li key={index} className={score === props.myScore ? "myScore" : ""}>
+            {score}
+            {score === props.myScore ? " (you)" : ""}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 };

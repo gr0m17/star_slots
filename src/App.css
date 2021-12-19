@@ -1,31 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
 .App {
   text-align: center;
 }
-.flexBox {
+.content {
+  background-color: #e5e6e4;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  margin: auto;
   flex-wrap: wrap;
+  height: 100vh;
+  overflow: auto;
   /* flex-direction: row; */
 }
-.app {
+.slot-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin: 3rem; */
+  flex-wrap: wrap;
+  margin-top: 3rem;
+}
+@media screen and (min-width: 1100px) {
+  .slot-game {
+    transform: scale(1.5, 1.5);
+  }
+}
+/* .flexCol {
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 500px;
   justify-content: center;
   align-items: center;
-}
-.flexCol {
+} */
+.payout-table {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  /* width: 500px; */
-  justify-content: center;
   align-items: center;
+  background-color: #f1d8bb;
+  min-width: 220px;
+  border: 2px solid #333;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 3rem;
 }
-.payoutTable {
-  height: 100vh;
+.score-board {
+  font-family: "Press Start 2P", cursive;
+  display: flex;
+  margin-bottom: 3em;
+  flex-direction: column;
+  background-color: #f1d8bb;
+  min-width: 240px;
   justify-content: center;
-  align-items: center;
+  align-items: right;
+  border: 2px solid #333;
+  padding: 1.5rem;
+  padding-top: 0;
+  margin-top: 3rem;
+  border-radius: 1rem;
+  line-height: 1.5rem;
+}
+.myScore {
+  color: #b52121;
 }
 .App-logo {
   height: 40vmin;
@@ -84,27 +124,14 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+.button {
+  margin: 0.1rem;
+}
+
 .spin-button {
   padding: 1rem;
-  background-color: yellow;
-  border-radius: 1rem;
-  color: #222;
-  box-shadow: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.wager-one-button {
-  padding: 1rem;
-  background-color: #888888;
-  border-radius: 1rem;
-  color: #222;
-  box-shadow: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.wager-max-button {
-  padding: 1rem;
-  background-color: #ff0000;
+  background-color: #ffd921;
   border-radius: 1rem;
   color: #222;
   box-shadow: 10px;
@@ -112,9 +139,41 @@
   cursor: pointer;
 }
 
-.titleBox {
-  width: 310px;
+.wager-one-button {
+  padding: 1rem;
+  background-color: #59c9f1;
+  border-radius: 1rem;
   color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.muted-button {
+  height: 51px;
+  width: 60px;
+  padding: 1rem;
+  background-color: #dda059;
+  border-radius: 1rem;
+  color: #222;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.wager-max-button {
+  padding: 1rem;
+  background-color: #b52121;
+  border-radius: 1rem;
+  color: #ddd;
+  box-shadow: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.titleBox {
+  background-color: #f1d8bb;
+  width: 310px;
+  color: #444;
   box-shadow: 10px;
   font-weight: bold;
   border-style: dotted dotted solid dotted;
@@ -125,7 +184,7 @@
   width: 310px;
   height: 64px;
   margin: 0rem;
-  border-radius: 0.2rem;
+  border-radius: 0rem;
   border-width: 0.15rem;
   color: #222;
   font-weight: bold;
@@ -133,7 +192,8 @@
   text-align: center;
 }
 .Information {
-  width: 350px;
+  background-color: #f1d8bb;
+  min-width: 400px;
   height: 45px;
   padding: 10px;
   margin: 0rem;
@@ -145,7 +205,10 @@
   text-align: center;
 }
 .Buttons {
-  width: 350px;
+  background-color: #f1d8bb;
+  display: flex;
+  min-width: 400px;
+  align-items: center;
 
   padding: 10px;
   margin: 0rem;

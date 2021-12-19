@@ -1,9 +1,9 @@
 import easyDB from "easydb-io";
 import { useState, useEffect, React } from "react";
-
+import { setCookie, getCookie } from "../utils/storage";
 const db = easyDB({
-  database: "2648cddb-5633-4d8c-ad71-2bb8e13a66be",
-  token: "60581ef8-ff21-4b2f-9fe1-cd14d9936f41",
+  database: "2472f89a-b73c-4dfc-847e-10a8f4a18ee6",
+  token: "cde7f55a-ff77-472b-ae68-d57367355963",
 });
 let deviceID = null;
 // Use a callback
@@ -15,27 +15,6 @@ let deviceID = null;
 
 const startingBank = 500;
 
-function setCookie(cname, cvalue, exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  let expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-export function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 export function checkBank() {
   let bank = getCookie("bank");
   if (bank !== "" && bank !== null) {
@@ -72,8 +51,6 @@ const generateID = () => {
 const updateHighscore = async (bankValue, deviceID) => {
   let value, values;
   value = await db.put(deviceID, { bank: bankValue });
-  //   value = await db.get("myKey");
-  //   value = await db.delete("myKey");
   values = await db.list();
   return values;
   // console.log(values);

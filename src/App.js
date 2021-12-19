@@ -23,21 +23,43 @@ import StarSlotsLogo_IMG from "./images/StarSlotsLogo.png";
 import DisplayPayout from "./components/DisplayPayouts";
 import { setBank, checkBank } from "./components/HighScore";
 import GetHighScores from "./components/GetHighScores";
+import { payoutTable, slotArray } from "./components/payoutTable";
+import slotAudio001 from "./sounds/reel_song/reelSong_001.mp3";
+import slotAudio002 from "./sounds/reel_song/reelSong_002.mp3";
+import slotAudio003 from "./sounds/reel_song/reelSong_003.mp3";
+import slotAudio004 from "./sounds/reel_song/reelSong_004.mp3";
+import slotAudio005 from "./sounds/reel_song/reelSong_005.mp3";
+import slotAudio006 from "./sounds/reel_song/reelSong_006.mp3";
+import slotAudio007 from "./sounds/reel_song/reelSong_007.mp3";
+import MutedIcon from "./images/volume-mute-solid.svg";
+import VolumeIcon from "./images/volume-up-solid.svg";
+import winSound from "./sounds/reels_win_001.mp3";
+import { getCookie, setCookie } from "./utils/storage";
+const slotAudio = [
+  slotAudio001,
+  slotAudio002,
+  slotAudio003,
+  slotAudio004,
+  slotAudio005,
+  slotAudio006,
+  slotAudio007,
+];
 const payoutTableLookup = {
   cherry: 2,
   bakedFish: 3,
   goldBar: 5,
   Strawberry: 5,
   Glacierfish: 10,
-  Grape: 5,
+  Grape: 10,
   Lionfish: 10,
   Mutant_Carp: 25,
-  Pineapple: 5,
+  Pineapple: 50,
   Pink_Cake: 50,
-  Prehistoric_Tibia: 1,
+  Prehistoric_Tibia: 75,
   Rainbow_Trout: 100,
   // Blank: 1,
 };
+let songCounter = 0;
 const payoutTableNames = [
   "cherry",
   "bakedFish",
@@ -54,12 +76,7 @@ const payoutTableNames = [
   // "Blank",
 ];
 
-const payoutTable = [
-  2, 3, 5, 5, 5, 10, 10, 25, 25, 50, 75, 100,
-  // 1
-];
-
-const slotArray = [
+const slotArrayDisplay = [
   cherry,
   bakedFish,
   goldBar,
@@ -76,7 +93,6 @@ const slotArray = [
 ];
 
 function App() {
-  // GetHighScores();
   const [topDisplayRow, setTopDisplayRow] = useState([
     getRandomItem(slotArray),
     getRandomItem(slotArray),
@@ -103,17 +119,41 @@ function App() {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [bankAmount, setBankAmount] = useState(null);
   const bankAmountRef = useRef(bankAmount);
+  const [muted, setMuted] = useState(0);
   const [highScores, setHighScores] = useState(0);
   bankAmountRef.current = bankAmount;
   const buttonsDisabledRef = useRef(buttonsDisabled);
   buttonsDisabledRef.current = buttonsDisabled;
   const wagerLinesRef = useRef(wagerLines);
   wagerLinesRef.current = wagerLines;
+  //
+  //
+  //
   PreloadSpinners();
-
   if (bankAmount === null) {
     setBankAmount(checkBank());
   }
+  //
+  useEffect(() => {
+    const cookieMuted = getCookie("muted");
+    if (+cookieMuted === 1) {
+      setMuted(1);
+    }
+  }, []);
+
+  function muteHandler() {
+    console.log("muteHandler");
+    console.log("muted:", muted);
+    if (muted === 0) {
+      setMuted(1);
+      setCookie("muted", 1, 365);
+    } else {
+      setMuted(0);
+      setCookie("muted", 0, 365);
+    }
+  }
+  //
+  //
 
   const wagerHandler = () => {
     if (wagerLines < maxLines) {
@@ -133,6 +173,8 @@ function App() {
     // }, 3000);
   };
   const spinHandler = (input) => {
+    PlaySlotSound();
+
     console.log(
       "bankAmount:",
       bankAmount,
@@ -149,6 +191,9 @@ function App() {
     setButtonsDisabled(true);
     setWinAmount(0);
     const payWins = () => {
+      if (winAmountRef.current > 0) {
+        PlayWinSound();
+      }
       setBank(winAmountRef.current + bankAmountRef.current);
       setBankAmount(winAmountRef.current + bankAmountRef.current);
       return winAmountRef.current + bankAmount;
@@ -175,7 +220,7 @@ function App() {
           setTopDisplayWin(toDisplay);
         }
       }
-    }, 1500);
+    }, 1800);
     const timer2 = setTimeout(() => {
       const toDisplay = resolveGame(slotArray, 10);
 
@@ -198,16 +243,49 @@ function App() {
       setWagerLines(0);
       setButtonsDisabled(false);
       payWins();
-    }, 3000);
+    }, 2700);
 
+    // function slotSounds() {
+    //   let slotAudio = new Audio(SlotSound);
+    //   slotAudio.play();
+    // }
+    // function winSounds() {
+
+    // }
+
+    //
+
+    //
+    function PlaySlotSound() {
+      if (muted === 1) return;
+      let PlaySlotAudio = new Audio(slotAudio[songCounter]);
+      PlaySlotAudio.play();
+      console.log("songCounter:", songCounter);
+      console.log(slotAudio);
+      songCounter >= slotAudio.length - 1
+        ? (songCounter = 0)
+        : (songCounter = +songCounter + 1);
+    }
+    function PlayWinSound() {
+      let winSounds = new Audio(winSound);
+      if (muted === 1) {
+        winSounds.volume = 0.05;
+      } else {
+        winSounds.volume = 1;
+      }
+      winSounds.play();
+    }
+    //
+
+    //
     setTopDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
     setDisplayArray([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
     setBottomDisplayRow([SpinAssigner(), SpinAssigner(), SpinAssigner()]);
     return () => clearTimeout(timer1, timer2, timer3);
   };
   return (
-    <div className="flexBox">
-      <div className="app">
+    <div className="content">
+      <div className="slot-game">
         <div className="titleBox">
           <img src={StarSlotsLogo_IMG} alt="logo" />
         </div>
@@ -236,21 +314,21 @@ function App() {
         </div>
         <div className="Buttons">
           <button
-            className="wager-one-button"
+            className="wager-one-button button"
             onClick={wagerHandler}
             disabled={buttonsDisabledRef.current}
           >
             BET ONE
           </button>
           <button
-            className="wager-max-button"
+            className="wager-max-button button"
             onClick={maxWagerHandler}
             disabled={buttonsDisabledRef.current}
           >
             BET MAX!
           </button>
           <button
-            className="spin-button"
+            className="spin-button button"
             onClick={spinHandler}
             disabled={
               buttonsDisabledRef.current || wagerLines <= 0 ? true : false
@@ -258,10 +336,18 @@ function App() {
           >
             Spin the reels!
           </button>
+          <button className="muted-button" onClick={muteHandler}>
+            <img src={muted ? MutedIcon : VolumeIcon} />
+          </button>
         </div>
-        <GetHighScores />
       </div>
-      <DisplayPayout slotArray={slotArray} payoutTable={payoutTable} />
+      <div className="information-panel">
+        <GetHighScores />
+        <DisplayPayout
+          slotArray={slotArrayDisplay}
+          payoutTable={Object.values(payoutTableLookup)}
+        />
+      </div>
     </div>
   );
 }
